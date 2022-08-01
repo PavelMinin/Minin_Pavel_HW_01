@@ -159,7 +159,7 @@ class SubtractHandler(_calculator: ICalculator) : IHandlers,
         val operand1 = matcher.group(1)
         val operand2 = matcher.group(3)
         if (operand1 != null && operand2 != null) {
-            return calculator.multiply(operand1.toDouble(), operand2.toDouble())
+            return calculator.subtract(operand1.toDouble(), operand2.toDouble())
         } else {
             return Double.NaN
         }

@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
 fun main() {
     val calc = StringExpressionAnalyzer()
-    val strForCalc = "(5 + 5) / 3 + 7 * 9"
+    val strForCalc = "4 + 1 / 3 - 10"
     println(strForCalc)
     val answer = calc.calculateString(strForCalc)
     println(answer)
