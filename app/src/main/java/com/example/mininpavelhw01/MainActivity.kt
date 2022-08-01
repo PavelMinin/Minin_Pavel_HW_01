@@ -9,3 +9,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 }
+
+fun main() {
+    val calc = StringExpressionAnalyzer()
+    val strForCalc = "(5 + 5) / 3 + 7 * 9"
+    println(strForCalc)
+    val answer = calc.calculateString(strForCalc)
+    println(answer)
+}
