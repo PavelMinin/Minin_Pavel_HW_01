@@ -1,5 +1,10 @@
 package com.example.mininpavelhw01
 
+/**
+ * Калькулятор, реализующий математические функции.
+ * Реализованы дополнительно возведение в степень, модуль и квадратный корень.
+ */
+
 interface ICalculator {
     fun add(a: Double, b: Double): Double
     fun subtract(a: Double, b: Double): Double
