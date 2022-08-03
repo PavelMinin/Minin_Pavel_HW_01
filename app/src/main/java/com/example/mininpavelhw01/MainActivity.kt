@@ -11,9 +11,31 @@ class MainActivity : AppCompatActivity() {
 }
 
 fun main() {
+    val ALLOWED_SYMBOLS = "([\\d-+*/^|() ]*[.,]*)*"
+
     val calc = StringExpressionAnalyzer()
-    val strForCalc = "4 + 1 / 3 - 10"
-    println(strForCalc)
-    val answer = calc.calculateString(strForCalc)
-    println(answer)
+    println("Input math expression:")
+
+    var str: String?
+
+    do {
+        str = readLine()
+        val isCorrect = checkExpression(str, ALLOWED_SYMBOLS)
+        if(!isCorrect) {
+            println("Incorrect expression. Try again:")
+        }
+    } while (!isCorrect)
+
+    val strForCalc = str as String
+    val answer = calc.calculateString(str)
+    println("Result: " + answer)
+}
+
+/**
+ * Проверка входного выражения на корректность.
+ */
+fun checkExpression(_str: String?, regexp: String): Boolean {
+    if(_str == null) return false
+    val str = _str.replace(" +", "")
+    return str.matches(regexp.toRegex())
 }

@@ -3,6 +3,13 @@ package com.example.mininpavelhw01
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+/**
+ * В данном файле реализованы классы и функции для разбора строки на операнды с использованием
+ * регулярных выражений. Данно решение позволяет без особых сложностей расширять функционал
+ * калькулятора, добавляя новый хэндлер в данном файле и добавляя его в PriorityQueue в файле
+ * StringExpressionAnalyzer
+ */
+
 val NUMBER_PATTERN: String
     get() = "(-?\\d+(\\.\\d+){0,1})"
 
@@ -25,12 +32,15 @@ val SUBTRACT_PATTERN: String
     get() = " *\\- *"
 
 interface IHandlers {
-
     val priority: Int
-
     fun handle (_str: String) : String
 }
 
+/**
+ * Абстрактный класс. Реализован цикл для выполнения математический операций с операндамиЮ пока в
+ * выражении присутствуют части, удовлетворяющие паттерну. Сама функция расчета абстрактная и
+ * зависит от выполняемой операции. Это реализуется в хэндлерах.
+ */
 abstract class OperatorHandlers(_regexp: String): IHandlers {
 
     val regexp = _regexp
@@ -81,12 +91,13 @@ class BracketsHandler(_calculator: ICalculator) : IHandlers {
 
     override val priority: Int
         get() {
-            return 5
+            return 0
         }
 
 
     override fun handle(_str: String): String {
-        val pattern: Pattern = Pattern.compile("(.*)" + "(" + OP_BR_PATTERN + ".+" + CL_BR_PATTERN + ")" + "(.*)")
+        val pattern: Pattern = Pattern.compile("(.*)" +
+                "(" + OP_BR_PATTERN + NUMBER_PATTERN + CL_BR_PATTERN + ")" + "(.*)")
         var str = _str
         do {
             val matcher: Matcher = pattern.matcher(str)
@@ -94,9 +105,7 @@ class BracketsHandler(_calculator: ICalculator) : IHandlers {
             if (isMatch) {
                 val stringAnalyzer = StringExpressionAnalyzer()
                 val withoutBrackets = matcher.group(2).substring(1, matcher.group(2).length - 1)
-                var temp = stringAnalyzer.calculateString(withoutBrackets)
-
-                str = str.replace(matcher.group(2),temp.toString())
+                str = str.replace(matcher.group(2),withoutBrackets)
             }
         } while (isMatch)
         return str
@@ -166,6 +175,9 @@ class SubtractHandler(_calculator: ICalculator) : IHandlers,
     }
 }
 
+/**
+ * Компаратор сравнивает хэндлеры по приоритету для PriorityQueue.
+ */
 class HandlerComparator: Comparator<IHandlers> {
     override fun compare(p0: IHandlers?, p1: IHandlers?): Int {
         if (p0 == null && p1 == null) {
